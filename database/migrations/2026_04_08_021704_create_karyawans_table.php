@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('karyawans', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_karyawan');
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_jabatan')->constrained('jabatans')->onDelete('cascade');
             $table->string('jenis_kelamin');
-            $table->string('umur');
-            $table->string('ttl');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
             $table->string('agama');
             $table->string('alamat');
             $table->string('no_telp');
