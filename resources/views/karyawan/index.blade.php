@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-
-<!-- =========================================================
-* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
-==============================================================
-
-* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
-* Created by: ThemeSelection
-* License: You must have a valid license purchased in order to legally use the theme for your project.
-* Copyright ThemeSelection (https://themeselection.com)
-
-=========================================================
- -->
-<!-- beautify ignore:start -->
 <html
   lang="en"
   class="light-style layout-menu-fixed"
@@ -27,8 +14,8 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Daftar Pengajuan Cuti</title>
-    <meta name="description" content="Halaman daftar pengajuan cuti pengguna." />
+    <title>Daftar Karyawan</title>
+    <meta name="description" content="Halaman daftar karyawan." />
 
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -64,10 +51,9 @@
                   <div class="card bg-primary text-white">
                     <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
                       <div>
-                        <h4 class="card-title text-white mb-1">Daftar Pengajuan Cuti</h4>
-                        <p class="card-text text-white-75 mb-0">Pantau semua pengajuan cuti Anda dan lihat status konfirmasi admin di halaman ini.</p>
+                        <h4 class="card-title text-white mb-1">Daftar Karyawan</h4>
+                        <p class="card-text text-white-75 mb-0">Lihat semua data karyawan yang terdaftar.</p>
                       </div>
-                      <a href="{{ route('cuti.create') }}" class="btn btn-outline-light">Ajukan Cuti Baru</a>
                     </div>
                   </div>
                 </div>
@@ -78,47 +64,45 @@
                   <div class="card">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <div>
-                        <h5 class="mb-0">Riwayat Pengajuan</h5>
-                        <small class="text-muted">Daftar cuti yang pernah diajukan.</small>
+                        <h5 class="mb-0">Data Karyawan</h5>
+                        <small class="text-muted">Semua karyawan yang sudah tersimpan di sistem.</small>
                       </div>
                     </div>
                     <div class="card-body">
+                      @if(session('success'))
+                        <div class="alert alert-success">
+                          {{ session('success') }}
+                        </div>
+                      @endif
+
                       <div class="table-responsive text-nowrap">
                         <table class="table table-hover">
                           <thead>
                             <tr>
                               <th>No</th>
-                              <th>Nama Karyawan</th>
-                              <th>Tanggal Mulai</th>
-                              <th>Tanggal Selesai</th>
-                              <th>Alasan</th>
-                              <th>Status</th>
+                              <th>Nama</th>
+                              <th>Jabatan</th>
+                              <th>Jenis Kelamin</th>
+                              <th>Tempat Lahir</th>
+                              <th>Tanggal Lahir</th>
+                              <th>No. Telp</th>
                             </tr>
                           </thead>
                           <tbody>
-                            @forelse($cutis as $cuti)
+                            @forelse($karyawans as $karyawan)
                               <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $cuti->id_karyawans }}</td>
-                                <td>{{ date('d M Y', strtotime($cuti->tanggal_masuk)) }}</td>
-                                <td>{{ date('d M Y', strtotime($cuti->tanggal_keluar)) }}</td>
-                                <td>{{ strlen($cuti->alasan_cuti) > 40 ? substr($cuti->alasan_cuti, 0, 40) . '...' : $cuti->alasan_cuti }}</td>
-                                <td>
-                                  <span class="badge bg-warning">Menunggu</span>
-                                </td>
-                                <td>
-                                  <a href="{{ route('cuti.edit', $cuti) }}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
-                                  <form action="{{ route('cuti.destroy', $cuti) }}" method="POST" class="d-inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin menghapus pengajuan ini?')">Hapus</button>
-                                  </form>
-                                </td>
+                                <td>{{ optional($karyawan->user)->name ?? 'User #' . $karyawan->id_user }}</td>
+                                <td>{{ optional($karyawan->jabatan)->jabatan ?? 'Jabatan #' . $karyawan->id_jabatan }}</td>
+                                <td>{{ $karyawan->jenis_kelamin }}</td>
+                                <td>{{ $karyawan->tempat_lahir }}</td>
+                                <td>{{ date('d M Y', strtotime($karyawan->tanggal_lahir)) }}</td>
+                                <td>{{ $karyawan->no_telp }}</td>
                               </tr>
                             @empty
                               <tr>
                                 <td colspan="7" class="text-center text-muted py-4">
-                                  Belum ada pengajuan cuti. Klik "Ajukan Cuti Baru" untuk membuat permintaan pertama.
+                                  Belum ada data karyawan.
                                 </td>
                               </tr>
                             @endforelse
@@ -136,23 +120,15 @@
                         <div class="card-body">
                           <div class="d-flex align-items-start justify-content-between">
                             <div>
-                              <h6 class="mb-2">Ringkasan Status</h6>
-                              <p class="mb-0 text-muted">Sekilas tentang pengajuan cuti yang sedang diproses.</p>
+                              <h6 class="mb-2">Ringkasan Karyawan</h6>
+                              <p class="mb-0 text-muted">Jumlah total karyawan saat ini.</p>
                             </div>
-                            <i class="bx bx-list-check fs-2 text-primary"></i>
+                            <i class="bx bx-user fs-2 text-primary"></i>
                           </div>
                           <div class="mt-4">
                             <div class="d-flex align-items-center justify-content-between mb-3">
-                              <span>Menunggu</span>
-                              <strong>{{ $pendingCount ?? 0 }}</strong>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                              <span>Disetujui</span>
-                              <strong>{{ $approvedCount ?? 0 }}</strong>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between">
-                              <span>Ditolak</span>
-                              <strong>{{ $rejectedCount ?? 0 }}</strong>
+                              <span>Total Karyawan</span>
+                              <strong>{{ $karyawans->count() }}</strong>
                             </div>
                           </div>
                         </div>
@@ -161,11 +137,11 @@
                     <div class="col-12">
                       <div class="card bg-light">
                         <div class="card-body">
-                          <h6 class="mb-3">Petunjuk Singkat</h6>
+                          <h6 class="mb-3">Catatan</h6>
                           <ul class="ps-3 mb-0">
-                            <li>Periksa tanggal cuti untuk memastikan tidak bentrok dengan jadwal kerja.</li>
-                            <li>Gunakan alasan cuti yang singkat dan jelas.</li>
-                            <li>Admin akan mengubah status setelah memverifikasi permintaan.</li>
+                            <li>Pastikan data karyawan selalu ter-update.</li>
+                            <li>Gunakan halaman ini untuk memeriksa informasi contact.</li>
+                            <li>Lengkapi data jabatan dan identitas pengguna.</li>
                           </ul>
                         </div>
                       </div>
@@ -190,7 +166,5 @@
     <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>

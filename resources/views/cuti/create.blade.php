@@ -1,293 +1,165 @@
-@extends('layouts.app')
+<!DOCTYPE html>
 
-@section('content')
-<style>
-    .cuti-dashboard {
-        max-width: 1080px;
-        margin: 2.5rem auto;
-        padding: 0 1rem;
-    }
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
 
-    .hero-card {
-        background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
-        color: #ffffff;
-        border-radius: 1.5rem;
-        padding: 2rem;
-        box-shadow: 0 30px 60px rgba(18, 76, 161, 0.16);
-    }
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
 
-    .hero-card h1 {
-        font-size: 2rem;
-        margin-bottom: 0.75rem;
-    }
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
 
-    .hero-card p {
-        color: rgba(255, 255, 255, 0.85);
-        line-height: 1.75;
-    }
+    <title>Ajukan Cuti</title>
+    <meta name="description" content="Halaman form pengajuan cuti." />
 
-    .page-grid {
-        display: grid;
-        gap: 1.5rem;
-    }
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
 
-    @media (min-width: 992px) {
-        .page-grid {
-            grid-template-columns: 1.15fr 0.85fr;
-        }
-    }
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
 
-    .panel {
-        background: #ffffff;
-        border-radius: 1.25rem;
-        padding: 1.75rem;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
-    }
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" />
 
-    .panel h2 {
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
-    }
+    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+    <script src="{{ asset('assets/js/config.js') }}"></script>
+  </head>
 
-    .panel small {
-        color: #6b7280;
-    }
+  <body>
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        @include('layouts.partials.sidebar')
 
-    .form-group {
-        margin-bottom: 1.25rem;
-    }
+        <div class="layout-page">
+          @include('layouts.partials.navbar')
 
-    .form-label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: #111827;
-    }
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
+                <div class="col-12 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title mb-2">Form Pengajuan Cuti</h4>
+                      <p class="text-muted mb-4">Lengkapi informasi cuti Anda, lalu kirim permintaan kepada admin.</p>
 
-    .form-control,
-    .form-select,
-    .form-textarea {
-        width: 100%;
-        border-radius: 0.95rem;
-        border: 1px solid #d1d5db;
-        padding: 0.95rem 1rem;
-        font-size: 0.98rem;
-        background: #f9fafb;
-        color: #111827;
-        outline: none;
-        transition: all 0.2s ease;
-        box-sizing: border-box;
-    }
+                      @if ($errors->any())
+                        <div class="alert alert-danger">
+                          <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                            @endforeach
+                          </ul>
+                        </div>
+                      @endif
 
-    .form-control:focus,
-    .form-select:focus,
-    .form-textarea:focus {
-        border-color: #6366f1;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
-        background: #ffffff;
-    }
+                      <form action="{{ route('cuti.store') }}" method="POST">
+                        @csrf
 
-    .form-textarea {
-        min-height: 160px;
-        resize: vertical;
-    }
+                        <div class="mb-3">
+                          <label for="id_karyawans" class="form-label">Nama Karyawan</label>
+                          <select class="form-select" id="id_karyawans" name="id_karyawans" required>
+                            <option value="" disabled selected>Pilih Karyawan</option>
+                            @foreach ($karyawans as $karyawan)
+                              <option value="{{ $karyawan->id }}">{{ $karyawan->user->name }}</option>
+                            @endforeach
+                          </select>
+                        </div>
 
-    .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.95rem 1.5rem;
-        border-radius: 0.95rem;
-        border: none;
-        background: #4f46e5;
-        color: #ffffff;
-        font-weight: 700;
-        cursor: pointer;
-        transition: transform 0.2s ease, background 0.2s ease;
-        box-shadow: 0 18px 32px rgba(79, 70, 229, 0.18);
-    }
+                        <div class="row g-3 mb-3">
+                          <div class="col-md-6">
+                            <label for="tanggal_masuk" class="form-label">Tanggal Mulai</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="tanggal_masuk"
+                              name="tanggal_masuk"
+                              value="{{ old('tanggal_masuk') }}"
+                              required
+                            />
+                          </div>
+                          <div class="col-md-6">
+                            <label for="tanggal_keluar" class="form-label">Tanggal Selesai</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="tanggal_keluar"
+                              name="tanggal_keluar"
+                              value="{{ old('tanggal_keluar') }}"
+                              required
+                            />
+                          </div>
+                        </div>
 
-    .btn-primary:hover {
-        background: #4338ca;
-        transform: translateY(-1px);
-    }
+                        <div class="mb-3">
+                          <label for="alasan_cuti" class="form-label">Alasan Cuti</label>
+                          <textarea
+                            class="form-control"
+                            id="alasan_cuti"
+                            name="alasan_cuti"
+                            rows="4"
+                            placeholder="Tuliskan alasan cuti Anda"
+                            required
+                          >{{ old('alasan_cuti') }}</textarea>
+                        </div>
 
-    .status-card {
-        border-radius: 1.25rem;
-        overflow: hidden;
-    }
+                        <div class="mb-3">
+                          <label for="status" class="form-label">Status</label>
+                          <select class="form-select" id="status" name="status">
+                            <option value="menunggu" selected>Menunggu</option>
+                            <option value="disetujui">Disetujui</option>
+                            <option value="ditolak">Ditolak</option>
+                          </select>
+                        </div>
 
-    .status-card header {
-        background: #f8fafc;
-        padding: 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
-    }
+                        <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
+                        <a href="{{ route('cuti.index') }}" class="btn btn-outline-secondary ms-2">Kembali</a>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    .status-card header h3 {
-        margin: 0;
-        font-size: 1.1rem;
-    }
+            @include('layouts.partials.footer')
+            <div class="content-backdrop fade"></div>
+          </div>
+        </div>
+      </div>
 
-    .status-card .status-list {
-        display: grid;
-        gap: 1rem;
-        padding: 1.5rem;
-    }
-
-    .status-item {
-        border: 1px solid #e5e7eb;
-        border-radius: 1rem;
-        padding: 1.2rem;
-        background: #ffffff;
-    }
-
-    .status-item strong {
-        display: block;
-        font-size: 1rem;
-        margin-bottom: 0.45rem;
-    }
-
-    .status-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.65rem;
-        margin-bottom: 0.8rem;
-    }
-
-    .badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.4rem 0.75rem;
-        border-radius: 999px;
-        font-size: 0.78rem;
-        font-weight: 700;
-    }
-
-    .badge.pending {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .badge.approved {
-        background: #dcfce7;
-        color: #166534;
-    }
-
-    .badge.rejected {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-
-    .status-item p {
-        margin: 0;
-        color: #4b5563;
-        line-height: 1.7;
-    }
-
-    .support-note {
-        background: #eef2ff;
-        color: #3730a3;
-        padding: 1rem 1.2rem;
-        border-radius: 1rem;
-        margin-top: 1.5rem;
-        border: 1px solid #c7d2fe;
-    }
-</style>
-
-<div class="cuti-dashboard">
-    <div class="hero-card">
-        <h1>Ajukan Cuti &amp; Lihat Konfirmasi Admin</h1>
-        <p>Isi form pengajuan cuti di sebelah kiri. Hasil konfirmasi oleh admin akan terlihat di daftar di sebelah kanan.</p>
+      <div class="layout-overlay layout-menu-toggle"></div>
     </div>
 
-    <div class="page-grid mt-5">
-        <section class="panel">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2>Form Pengajuan Cuti</h2>
-                    <small>Lengkapi informasi cuti Anda dengan jelas.</small>
-                </div>
-            </div>
-
-            <form>
-                <div class="form-group">
-                    <label for="jenis_cuti" class="form-label">Jenis Cuti</label>
-                    <select id="jenis_cuti" class="form-select" name="jenis_cuti">
-                        <option selected>Pilih jenis cuti</option>
-                        <option value="tahunan">Cuti Tahunan</option>
-                        <option value="sakit">Cuti Sakit</option>
-                        <option value="besar">Cuti Besar</option>
-                        <option value="lainnya">Cuti Lainnya</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="mulai" class="form-label">Tanggal Mulai</label>
-                    <input type="date" id="mulai" class="form-control" name="mulai" />
-                </div>
-
-                <div class="form-group">
-                    <label for="selesai" class="form-label">Tanggal Selesai</label>
-                    <input type="date" id="selesai" class="form-control" name="selesai" />
-                </div>
-
-                <div class="form-group">
-                    <label for="alasan" class="form-label">Alasan Cuti</label>
-                    <textarea id="alasan" class="form-textarea" name="alasan" placeholder="Tuliskan alasan cuti Anda"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="kontak" class="form-label">Kontak Darurat</label>
-                    <input type="text" id="kontak" class="form-control" name="kontak" placeholder="0812xxxxxxx" />
-                </div>
-
-                <button type="submit" class="btn-primary">Kirim Pengajuan</button>
-            </form>
-        </section>
-
-        <section class="status-card">
-            <header>
-                <h3>Status Cuti Anda</h3>
-                <small>Ringkasan hasil konfirmasi admin.</small>
-            </header>
-
-            <div class="status-list">
-                <article class="status-item">
-                    <div class="status-meta">
-                        <span class="badge pending">Menunggu</span>
-                        <span>Pengajuan: 8 April 2026</span>
-                        <span>Durasi: 3 hari</span>
-                    </div>
-                    <strong>Cuti Tahunan</strong>
-                    <p>Administrasi sedang meninjau permintaan cuti Anda. Silakan cek kembali beberapa saat lagi.</p>
-                </article>
-
-                <article class="status-item">
-                    <div class="status-meta">
-                        <span class="badge approved">Disetujui</span>
-                        <span>Pengajuan: 26 Maret 2026</span>
-                        <span>Durasi: 2 hari</span>
-                    </div>
-                    <strong>Cuti Sakit</strong>
-                    <p>Admin telah menyetujui cuti Anda. Silakan siapkan bukti jika diperlukan saat kembali bekerja.</p>
-                </article>
-
-                <article class="status-item">
-                    <div class="status-meta">
-                        <span class="badge rejected">Ditolak</span>
-                        <span>Pengajuan: 10 Maret 2026</span>
-                        <span>Durasi: 1 hari</span>
-                    </div>
-                    <strong>Cuti Lainnya</strong>
-                    <p>Permintaan tersebut ditolak karena jadwal operasional. Coba ajukan kembali dengan tanggal berbeda.</p>
-                </article>
-            </div>
-
-            <div class="support-note">
-                <strong>Catatan:</strong> Setelah form dikirim, admin akan melakukan verifikasi dan hasil konfirmasi akan muncul di daftar status di atas.
-            </div>
-        </section>
-    </div>
-</div>
-@endsection
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+  </body>
+</html>

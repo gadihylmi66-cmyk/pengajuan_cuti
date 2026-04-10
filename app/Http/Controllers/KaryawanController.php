@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jabatan;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
-class JabatanController extends Controller
+class KaryawanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $jabatan = Jabatan::all();
-        return view('jabatan.index', compact('jabatan'));
+        $karyawans = Karyawan::with(['user', 'jabatan'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('karyawan.index', compact('karyawans'));
     }
 
     /**
@@ -35,7 +38,7 @@ class JabatanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Jabatan $jabatan)
+    public function show(Karyawan $karyawan)
     {
         //
     }
@@ -43,7 +46,7 @@ class JabatanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Jabatan $jabatan)
+    public function edit(Karyawan $karyawan)
     {
         //
     }
@@ -51,7 +54,7 @@ class JabatanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Jabatan $jabatan)
+    public function update(Request $request, Karyawan $karyawan)
     {
         //
     }
@@ -59,7 +62,7 @@ class JabatanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jabatan $jabatan)
+    public function destroy(Karyawan $karyawan)
     {
         //
     }

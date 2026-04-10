@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cuti;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
 class CutiController extends Controller
@@ -12,7 +13,10 @@ class CutiController extends Controller
      */
     public function index()
     {
-        //
+        $cutis = Cuti::orderBy('created_at', 'desc')->get();
+        $pendingCount = $cutis->count();
+
+        return view('cuti.index', compact('cutis', 'pendingCount'));
     }
 
     /**
@@ -20,7 +24,8 @@ class CutiController extends Controller
      */
     public function create()
     {
-        //
+        $karyawans = Karyawan::with('user')->get();
+        return view('cuti.create', compact('karyawans'));
     }
 
     /**
@@ -28,7 +33,16 @@ class CutiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'id_karyawans' => 'required|integer',
+            'alasan_cuti' => 'required|string|max:500',
+            'tanggal_masuk' => 'required|date',
+            'tanggal_keluar' => 'required|date|after_or_equal:tanggal_masuk',
+        ]);
+
+        Cuti::create($data);
+
+        return redirect()->route('cuti.index')->with('success', 'Pengajuan cuti berhasil disimpan.');
     }
 
     /**
@@ -36,7 +50,7 @@ class CutiController extends Controller
      */
     public function show(Cuti $cuti)
     {
-        //
+        return view('cuti.show', compact('cuti'));
     }
 
     /**
@@ -44,7 +58,7 @@ class CutiController extends Controller
      */
     public function edit(Cuti $cuti)
     {
-        //
+        return view('cuti.edit', compact('cuti'));
     }
 
     /**
@@ -52,7 +66,16 @@ class CutiController extends Controller
      */
     public function update(Request $request, Cuti $cuti)
     {
-        //
+        $data = $request->validate([
+            'id_karyawans' => 'required|integer',
+            'alasan_cuti' => 'required|string|max:500',
+            'tanggal_masuk' => 'required|date',
+            'tanggal_keluar' => 'required|date|after_or_equal:tanggal_masuk',
+        ]);
+
+        $cuti->update($data);
+
+        return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil diperbarui.');
     }
 
     /**
@@ -60,6 +83,8 @@ class CutiController extends Controller
      */
     public function destroy(Cuti $cuti)
     {
-        //
+        $cuti->delete();
+
+        return redirect()->route('cuti.index')->with('success', 'Pengajuan cuti berhasil dihapus.');
     }
 }

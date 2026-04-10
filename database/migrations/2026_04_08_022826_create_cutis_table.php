@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('alasan_cuti');
             $table->date('tanggal_masuk');
             $table->date('tanggal_keluar');
+            
             $table->timestamps();
         });
     }
