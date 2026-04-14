@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('alasan_cuti');
             $table->date('tanggal_masuk');
             $table->date('tanggal_keluar');
-            
+            $table->enum('status', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
+            $table->text('catatan_admin')->nullable();
             $table->timestamps();
         });
     }

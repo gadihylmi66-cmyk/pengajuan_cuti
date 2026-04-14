@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controller\Admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HasilAdminController;
+use App\Http\Controllers\Admin\CutiAdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KaryawanController;
@@ -15,14 +16,21 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// User routes (authenticated)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::resource('cuti', CutiController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('hasil', HasilController::class);
+    Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
+});
 
-Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
-Route::resource('cuti', CutiController::class);
-Route::resource('hasil', HasilController::class);
-
-
-Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard'])->name('admin.dashboard');
-Route::resource('/admin/karyawan', KaryawanController::class, ['as' => 'admin']);
-Route::resource('/admin/hasiladmin', HasilAdminController::class, ['as' => 'admin']);
-Route::resource('/admin/jabatan', JabatanController::class, ['as' => 'admin']);
+// Admin routes (authenticated + admin role)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::resource('karyawan', KaryawanController::class);
+    Route::resource('jabatan', JabatanController::class);
+    Route::resource('hasiladmin', HasilAdminController::class);
+    Route::resource('cuti', CutiAdminController::class);
+    Route::patch('cuti/{cuti}/approve', [CutiAdminController::class, 'approve'])->name('cuti.approve');
+    Route::patch('cuti/{cuti}/reject', [CutiAdminController::class, 'reject'])->name('cuti.reject');
+});

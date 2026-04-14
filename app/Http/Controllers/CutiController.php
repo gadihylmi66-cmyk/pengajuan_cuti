@@ -8,83 +8,83 @@ use Illuminate\Http\Request;
 
 class CutiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $cutis = Cuti::orderBy('created_at', 'desc')->get();
-        $pendingCount = $cutis->count();
+        $karyawan = Karyawan::where('id_user', auth()->id())->first();
 
-        return view('cuti.index', compact('cutis', 'pendingCount'));
+        if (!$karyawan) {
+            return view('cuti.index', [
+                'cutis'         => collect(),
+                'pendingCount'  => 0,
+                'approvedCount' => 0,
+                'rejectedCount' => 0,
+            ])->with('warning', 'Data karyawan Anda belum terdaftar. Hubungi admin.');
+        }
+
+        $cutis = Cuti::where('id_karyawans', $karyawan->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('cuti.index', [
+            'cutis'         => $cutis,
+            'pendingCount'  => $cutis->where('status', 'menunggu')->count(),
+            'approvedCount' => $cutis->where('status', 'disetujui')->count(),
+            'rejectedCount' => $cutis->where('status', 'ditolak')->count(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $karyawans = Karyawan::with('user')->get();
-        return view('cuti.create', compact('karyawans'));
+        $karyawan = Karyawan::where('id_user', auth()->id())->first();
+
+        if (!$karyawan) {
+            return redirect()->route('cuti.index')
+                ->with('error', 'Data karyawan Anda belum terdaftar. Hubungi admin.');
+        }
+
+        return view('cuti.create', compact('karyawan'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        $karyawan = Karyawan::where('id_user', auth()->id())->firstOrFail();
+
         $data = $request->validate([
-            'id_karyawans' => 'required|integer',
-            'alasan_cuti' => 'required|string|max:500',
-            'tanggal_masuk' => 'required|date',
+            'alasan_cuti'    => 'required|string|max:500',
+            'tanggal_masuk'  => 'required|date|after_or_equal:today',
             'tanggal_keluar' => 'required|date|after_or_equal:tanggal_masuk',
         ]);
+
+        $data['id_karyawans'] = $karyawan->id;
+        $data['status']       = 'menunggu';
 
         Cuti::create($data);
 
-        return redirect()->route('cuti.index')->with('success', 'Pengajuan cuti berhasil disimpan.');
+        return redirect()->route('cuti.index')
+            ->with('success', 'Pengajuan cuti berhasil dikirim. Menunggu persetujuan admin.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Cuti $cuti)
     {
+        $this->authorizeOwner($cuti);
+        $cuti->load('karyawan.user');
         return view('cuti.show', compact('cuti'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cuti $cuti)
+    // edit, update, destroy — tidak tersedia untuk user
+    // semua perubahan status hanya bisa dilakukan oleh admin
+
+    private function authorizeOwner(Cuti $cuti): void
     {
-        return view('cuti.edit', compact('cuti'));
-    }
+        $karyawan = Karyawan::where('id_user', auth()->id())->first();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Cuti $cuti)
-    {
-        $data = $request->validate([
-            'id_karyawans' => 'required|integer',
-            'alasan_cuti' => 'required|string|max:500',
-            'tanggal_masuk' => 'required|date',
-            'tanggal_keluar' => 'required|date|after_or_equal:tanggal_masuk',
-        ]);
-
-        $cuti->update($data);
-
-        return redirect()->route('cuti.index')->with('success', 'Data cuti berhasil diperbarui.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Cuti $cuti)
-    {
-        $cuti->delete();
-
-        return redirect()->route('cuti.index')->with('success', 'Pengajuan cuti berhasil dihapus.');
+        if (!$karyawan || $cuti->id_karyawans !== $karyawan->id) {
+            abort(403, 'Anda tidak memiliki akses ke data ini.');
+        }
     }
 }

@@ -1,51 +1,18 @@
 <!DOCTYPE html>
-
-<!-- =========================================================
-* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
-==============================================================
-
-* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
-* Created by: ThemeSelection
-* License: You must have a valid license purchased in order to legally use the theme for your project.
-* Copyright ThemeSelection (https://themeselection.com)
-
-=========================================================
- -->
-<!-- beautify ignore:start -->
-<html
-  lang="en"
-  class="light-style layout-menu-fixed"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="../assets/"
-  data-template="vertical-menu-template-free"
->
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title>Ajukan Cuti</title>
-    <meta name="description" content="Halaman form pengajuan cuti." />
-
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
-
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('assets/js/config.js') }}"></script>
   </head>
@@ -77,54 +44,43 @@
                         </div>
                       @endif
 
+                      <div class="mb-3">
+                        <label class="form-label">Nama Karyawan</label>
+                        <input type="text" class="form-control" value="{{ auth()->user()->name }}" disabled />
+                      </div>
+
                       <form action="{{ route('cuti.store') }}" method="POST">
                         @csrf
-
-                        <div class="mb-3">
-                          <label for="id_karyawans" class="form-label">Nama Karyawan</label>
-                          <select class="form-select" id="id_karyawans" name="id_karyawans" required>
-                            <option value="" disabled selected>Pilih Karyawan</option>
-                            @foreach ($karyawans as $karyawan)
-                              <option value="{{ $karyawan->id }}">{{ $karyawan->user->name }}</option>
-                            @endforeach
-                          </select>
-                        </div>
 
                         <div class="row g-3 mb-3">
                           <div class="col-md-6">
                             <label for="tanggal_masuk" class="form-label">Tanggal Mulai</label>
-                            <input
-                              type="date"
-                              class="form-control"
-                              id="tanggal_masuk"
-                              name="tanggal_masuk"
-                              value="{{ old('tanggal_masuk') }}"
-                              required
-                            />
+                            <input type="date" class="form-control @error('tanggal_masuk') is-invalid @enderror"
+                              id="tanggal_masuk" name="tanggal_masuk"
+                              value="{{ old('tanggal_masuk') }}" required />
+                            @error('tanggal_masuk')
+                              <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                           </div>
                           <div class="col-md-6">
                             <label for="tanggal_keluar" class="form-label">Tanggal Selesai</label>
-                            <input
-                              type="date"
-                              class="form-control"
-                              id="tanggal_keluar"
-                              name="tanggal_keluar"
-                              value="{{ old('tanggal_keluar') }}"
-                              required
-                            />
+                            <input type="date" class="form-control @error('tanggal_keluar') is-invalid @enderror"
+                              id="tanggal_keluar" name="tanggal_keluar"
+                              value="{{ old('tanggal_keluar') }}" required />
+                            @error('tanggal_keluar')
+                              <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                           </div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-4">
                           <label for="alasan_cuti" class="form-label">Alasan Cuti</label>
-                          <textarea
-                            class="form-control"
-                            id="alasan_cuti"
-                            name="alasan_cuti"
-                            rows="4"
-                            placeholder="Tuliskan alasan cuti Anda"
-                            required
-                          >{{ old('alasan_cuti') }}</textarea>
+                          <textarea class="form-control @error('alasan_cuti') is-invalid @enderror"
+                            id="alasan_cuti" name="alasan_cuti" rows="4"
+                            placeholder="Tuliskan alasan cuti Anda" required>{{ old('alasan_cuti') }}</textarea>
+                          @error('alasan_cuti')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                          @enderror
                         </div>
 
                         <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
@@ -150,7 +106,6 @@
     <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
   </body>
 </html>

@@ -1,294 +1,216 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection --}}
 <!DOCTYPE html>
-
-<!-- =========================================================
-* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
-==============================================================
-
-* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
-* Created by: ThemeSelection
-* License: You must have a valid license purchased in order to legally use the theme for your project.
-* Copyright ThemeSelection (https://themeselection.com)
-
-=========================================================
- -->
-<!-- beautify ignore:start -->
-<html
-  lang="en"
-  class="light-style layout-menu-fixed"
-  dir="ltr"
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr"
   data-theme="theme-default"
-  data-assets-path="../assets/"
-  data-template="vertical-menu-template-free"
->
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
+  data-assets-path="{{ asset('assets/') }}"
+  data-template="vertical-menu-template-free">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Dashboard Admin - Pengajuan Cuti</title>
+  <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+  <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+  <script src="{{ asset('assets/js/config.js') }}"></script>
+</head>
+<body>
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      @include('admin.partials.sidebar')
+      <div class="layout-page">
+        @include('admin.partials.navbar')
+        <div class="content-wrapper">
+          <div class="container-xxl flex-grow-1 container-p-y">
 
-    <title>Dashboard - Pengajuan Cuti</title>
+            @if(session('success'))
+              <div class="alert alert-success alert-dismissible fade show mb-4">
+                <i class="bx bx-check-circle me-1"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            @endif
 
-    <meta name="description" content="Dashboard admin untuk memantau cuti, jabatan, dan hasil" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
-
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-
-    <!-- Page CSS -->
-
-    <!-- Helpers -->
-    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
-
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{ asset('assets/js/config.js') }}"></script>
-  </head>
-
-  <body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-        <!-- Menu -->
-        @include('admin.partials.sidebar')
-        <!-- / Menu -->
-
-        <!-- Layout container -->
-        <div class="layout-page">
-          <!-- Navbar -->
-          @include('admin.partials.navbar')
-          <!-- / Navbar -->
-          <!-- Content wrapper -->
-          <div class="content-wrapper" style="background-color: #f5efe5; color: #4e3b23;">
-            <!-- Content -->
-
-            <div class="container-xxl flex-grow-1 container-p-y" style="background-color: #f7f1e8; color: #4e3b23;">
-              <div class="row">
-                <div class="col-lg-12 mb-4 order-0">
-                  <div class="card overflow-hidden" style="background: linear-gradient(180deg, #f9f4ea 0%, #ddc6a7 100%); border-color: rgba(78, 59, 35, 0.18);">
-                    <div class="row g-0 align-items-center">
-                      <div class="col-sm-7">
-                        <div class="card-body">
-                          <h5 class="card-title mb-2" style="color: #4e3b23;">Selamat datang, {{ Auth::user()->name }}! 🎉</h5>
-                          <p class="card-text mb-4" style="color: #5b4b39;">
-                            Kelola pengajuan cuti, jabatan, dan hasil karyawan dengan mudah dari dashboard ini.
-                            Semua data diperbarui otomatis setiap kali Anda masuk.
-                          </p>
-                          <div class="d-flex flex-wrap gap-2">
-                            <a href="{{ url('/admin/dashboard') }}" class="btn btn-light btn-sm">Lihat Dashboard</a>
-                            <a href="{{ url('/cuti') }}" class="btn btn-outline-light btn-sm">Pengajuan Cuti</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-5 text-center text-sm-left">
-                        <div class="card-body pb-0 px-0 px-md-4">
-                          <img
-                            src="{{ asset('assets/img/illustrations/man-with-laptop-light.png') }}"
-                            height="170"
-                            alt="Dashboard Illustration"
-                            data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                            data-app-light-img="illustrations/man-with-laptop-light.png"
-                          />
-                        </div>
+            {{-- Welcome Banner --}}
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="card overflow-hidden" style="background:linear-gradient(135deg,#c19a6b 0%,#8b6340 100%);">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-sm-7">
+                      <div class="card-body py-4">
+                        <h4 class="text-white mb-2">Selamat datang, {{ Auth::user()->name }}! 👑</h4>
+                        <p class="text-white mb-4" style="opacity:.85;">
+                          Kelola pengajuan cuti karyawan, data jabatan, dan karyawan dari sini.
+                        </p>
+                        <a href="{{ route('admin.cuti.index') }}" class="btn btn-white btn-sm me-2">
+                          <i class="bx bx-calendar-check me-1"></i> Kelola Cuti
+                        </a>
+                        <a href="{{ route('admin.karyawan.index') }}" class="btn btn-outline-white btn-sm">
+                          Data Karyawan
+                        </a>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="col-xl-3 col-md-6 mb-4">
-                  <div class="card h-100 text-dark" style="background: linear-gradient(180deg, #f8f2e7 0%, #e6cfb0 100%); border-color: rgba(78, 59, 35, 0.18);">
-                    <div class="card-body">
-                      <div class="d-flex align-items-start justify-content-between">
-                        <div class="avatar rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #c19a6b;">
-                          <i class="bx bx-user fs-4" style="color: #3b200c;"></i>
-                        </div>
-                        <span class="badge rounded-pill" style="background: #d2b48c; color: #4e3521; font-size: .82rem; padding: .35rem .75rem;">Karyawan</span>
-                      </div>
-                      <h3 class="mt-3">{{ $karyawanCount }}</h3>
-                      <p class="mb-0">Jumlah karyawan terdaftar</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xl-3 col-md-6 mb-4">
-                  <div class="card h-100 text-dark" style="background: linear-gradient(180deg, #f8f2e7 0%, #e6cfb0 100%); border-color: rgba(78, 59, 35, 0.18);">
-                    <div class="card-body">
-                      <div class="d-flex align-items-start justify-content-between">
-                        <div class="avatar rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #c19a6b;">
-                          <i class="bx bx-briefcase fs-4" style="color: #3b200c;"></i>
-                        </div>
-                        <span class="badge rounded-pill" style="background: #d2b48c; color: #4e3521; font-size: .82rem; padding: .35rem .75rem;">Jabatan</span>
-                      </div>
-                      <h3 class="mt-3">{{ $jabatanCount }}</h3>
-                      <p class="mb-0">Total jabatan yang tersedia</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xl-3 col-md-6 mb-4">
-                  <div class="card h-100 text-dark" style="background: linear-gradient(180deg, #f8f2e7 0%, #e6cfb0 100%); border-color: rgba(78, 59, 35, 0.18);">
-                    <div class="card-body">
-                      <div class="d-flex align-items-start justify-content-between">
-                        <div class="avatar rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #c19a6b;">
-                          <i class="bx bx-calendar-check fs-4" style="color: #3b200c;"></i>
-                        </div>
-                        <span class="badge rounded-pill" style="background: #d2b48c; color: #4e3521; font-size: .82rem; padding: .35rem .75rem;">Cuti</span>
-                      </div>
-                      <h3 class="mt-3">{{ $cutiCount }}</h3>
-                      <p class="mb-0">Pengajuan cuti yang tercatat</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xl-3 col-md-6 mb-4">
-                  <div class="card h-100 text-dark" style="background: linear-gradient(180deg, #f8f2e7 0%, #e6cfb0 100%); border-color: rgba(78, 59, 35, 0.18);">
-                    <div class="card-body">
-                      <div class="d-flex align-items-start justify-content-between">
-                        <div class="avatar rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #c19a6b;">
-                          <i class="bx bx-check-shield fs-4" style="color: #3b200c;"></i>
-                        </div>
-                        <span class="badge rounded-pill" style="background: #d2b48c; color: #4e3521; font-size: .82rem; padding: .35rem .75rem;">Hasil</span>
-                      </div>
-                      <h3 class="mt-3">{{ $hasilCount }}</h3>
-                      <p class="mb-0">Data hasil yang tersimpan</p>
+                    <div class="col-sm-5 text-center d-none d-sm-block">
+                      <img src="{{ asset('assets/img/illustrations/man-with-laptop-light.png') }}"
+                        height="160" alt="Admin" class="mt-2" />
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div class="card shadow-lg border-0 mt-4">
-            <div class="card-header">
-              <h5><i class="bx bx-list-ul"></i> Daftar User</h5>
             </div>
 
-            <div class="table-responsive">
-              <table class="table align-middle mb-0">
-                <thead class="table-light">
-                  <tr>
-                    <th>#ID</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Terdaftar</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  @forelse ($users as $user)
-                  <tr class="{{ $user->role == 'admin' ? 'admin-row' : '' }}">
-                    <td>#{{ $user->id }}</td>
-
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <div class="avatar-circle me-3">
-                          {{ strtoupper(substr($user->name, 0, 1)) }}
-                        </div>
-                        {{ $user->name }}
+            {{-- Stat Cards --}}
+            <div class="row g-4 mb-4">
+              <div class="col-xl-3 col-sm-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                      <div class="avatar rounded p-2" style="background:rgba(105,108,255,.16);">
+                        <i class="bx bx-group fs-4" style="color:#696cff;"></i>
                       </div>
-                    </td>
-
-                    <td>{{ $user->email }}</td>
-
-                    <td>
-                      @if($user->role == 'admin')
-                        <span class="badge bg-danger">ADMIN 👑</span>
-                      @else
-                        <span class="badge bg-success">MEMBER</span>
-                      @endif
-                    </td>
-
-                    <td>
-                      {{ $user->created_at->format('d M Y') }}<br>
-                      <small>{{ $user->created_at->format('H:i') }}</small>
-                    </td>
-                  </tr>
-                  @empty
-                  <tr>
-                    <td colspan="5" class="text-center">Tidak ada data</td>
-                  </tr>
-                  @endforelse
-                </tbody>
-              </table>
+                      <span class="badge rounded-pill" style="background:rgba(105,108,255,.16);color:#696cff;">Karyawan</span>
+                    </div>
+                    <h3 class="mb-1">{{ $karyawanCount }}</h3>
+                    <p class="mb-0 text-muted">Total Karyawan</p>
+                    <a href="{{ route('admin.karyawan.index') }}" class="small text-primary">Lihat semua →</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-sm-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                      <div class="avatar rounded p-2" style="background:rgba(255,171,0,.16);">
+                        <i class="bx bx-time fs-4 text-warning"></i>
+                      </div>
+                      <span class="badge bg-label-warning">Pending</span>
+                    </div>
+                    <h3 class="mb-1">{{ $pendingCount }}</h3>
+                    <p class="mb-0 text-muted">Menunggu Persetujuan</p>
+                    <a href="{{ route('admin.cuti.index') }}" class="small text-warning">Proses sekarang →</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-sm-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                      <div class="avatar rounded p-2" style="background:rgba(40,199,111,.16);">
+                        <i class="bx bx-check-circle fs-4 text-success"></i>
+                      </div>
+                      <span class="badge bg-label-success">Disetujui</span>
+                    </div>
+                    <h3 class="mb-1">{{ $approvedCount }}</h3>
+                    <p class="mb-0 text-muted">Cuti Disetujui</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-3 col-sm-6">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                      <div class="avatar rounded p-2" style="background:rgba(255,62,29,.16);">
+                        <i class="bx bx-x-circle fs-4 text-danger"></i>
+                      </div>
+                      <span class="badge bg-label-danger">Ditolak</span>
+                    </div>
+                    <h3 class="mb-1">{{ $rejectedCount }}</h3>
+                    <p class="mb-0 text-muted">Cuti Ditolak</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
+            {{-- Tabel Cuti Pending --}}
+            <div class="card">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <div>
+                  <h5 class="mb-0">Pengajuan Cuti Menunggu Persetujuan</h5>
+                  <small class="text-muted">Perlu tindakan segera</small>
+                </div>
+                <a href="{{ route('admin.cuti.index') }}" class="btn btn-sm btn-primary">Lihat Semua</a>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Karyawan</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
+                        <th>Alasan</th>
+                        <th>Diajukan</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @forelse($recentCutis as $cuti)
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <div class="d-flex align-items-center justify-content-center rounded-circle text-white fw-bold me-2"
+                                style="width:32px;height:32px;background:#696cff;font-size:.8rem;flex-shrink:0;">
+                                {{ strtoupper(substr($cuti->karyawan?->user?->name ?? 'U', 0, 1)) }}
+                              </div>
+                              <div>
+                                <span class="fw-medium">{{ $cuti->karyawan?->user?->name ?? '-' }}</span><br>
+                                <small class="text-muted">{{ $cuti->karyawan?->jabatan?->jabatan ?? '-' }}</small>
+                              </div>
+                            </div>
+                          </td>
+                          <td>{{ \Carbon\Carbon::parse($cuti->tanggal_masuk)->format('d M Y') }}</td>
+                          <td>{{ \Carbon\Carbon::parse($cuti->tanggal_keluar)->format('d M Y') }}</td>
+                          <td>{{ Str::limit($cuti->alasan_cuti, 35) }}</td>
+                          <td>
+                            {{ $cuti->created_at->format('d M Y') }}<br>
+                            <small class="text-muted">{{ $cuti->created_at->diffForHumans() }}</small>
+                          </td>
+                          <td>
+                            <a href="{{ route('admin.cuti.show', $cuti) }}" class="btn btn-sm btn-outline-info me-1">Detail</a>
+                            <form action="{{ route('admin.cuti.approve', $cuti) }}" method="POST" class="d-inline-block">
+                              @csrf @method('PATCH')
+                              <button type="submit" class="btn btn-sm btn-success me-1"
+                                onclick="return confirm('Setujui cuti ini?')">✓</button>
+                            </form>
+                            <form action="{{ route('admin.cuti.reject', $cuti) }}" method="POST" class="d-inline-block">
+                              @csrf @method('PATCH')
+                              <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Tolak cuti ini?')">✗</button>
+                            </form>
+                          </td>
+                        </tr>
+                      @empty
+                        <tr>
+                          <td colspan="6" class="text-center text-muted py-4">
+                            <i class="bx bx-check-circle fs-3 text-success d-block mb-2"></i>
+                            Tidak ada pengajuan cuti yang menunggu persetujuan.
+                          </td>
+                        </tr>
+                      @endforelse
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-            <!-- / Content -->
 
-            <!-- Footer -->
-            @include('layouts.partials.footer')
-            <!-- / Footer -->
-
-            <div class="content-backdrop fade"></div>
           </div>
-          <!-- Content wrapper -->
+          @include('layouts.partials.footer')
+          <div class="content-backdrop fade"></div>
         </div>
-        <!-- / Layout page -->
       </div>
-
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <!-- / Layout wrapper -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
 
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-
-    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
-
-    <!-- Main JS -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
-
-    <!-- Page JS -->
-    <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
-
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-  </body>
+  <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+  <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+  <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+  <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+  <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
+  <script src="{{ asset('assets/js/main.js') }}"></script>
+</body>
 </html>
