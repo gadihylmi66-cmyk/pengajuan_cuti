@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jabatan;
 use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -16,7 +18,7 @@ class KaryawanController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('karyawan.index', compact('karyawans'));
+        return view('admin.karyawan.index', compact('karyawans'));
     }
 
     /**
@@ -24,7 +26,10 @@ class KaryawanController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::orderBy('name')->get();
+        $jabatans = Jabatan::orderBy('jabatan')->get();
+
+        return view('admin.karyawan.create', compact('users', 'jabatans'));
     }
 
     /**
@@ -32,7 +37,20 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'id_user' => 'required|exists:users,id',
+            'id_jabatan' => 'required|exists:jabatans,id',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'tempat_lahir' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'agama' => 'required|string|max:100',
+            'alamat' => 'required|string|max:500',
+            'no_telp' => 'required|string|max:30',
+        ]);
+
+        Karyawan::create($data);
+
+        return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil ditambahkan.');
     }
 
     /**

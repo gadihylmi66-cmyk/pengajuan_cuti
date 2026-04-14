@@ -127,15 +127,6 @@
                           >{{ old('alasan_cuti') }}</textarea>
                         </div>
 
-                        <div class="mb-3">
-                          <label for="status" class="form-label">Status</label>
-                          <select class="form-select" id="status" name="status">
-                            <option value="menunggu" selected>Menunggu</option>
-                            <option value="disetujui">Disetujui</option>
-                            <option value="ditolak">Ditolak</option>
-                          </select>
-                        </div>
-
                         <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
                         <a href="{{ route('cuti.index') }}" class="btn btn-outline-secondary ms-2">Kembali</a>
                       </form>

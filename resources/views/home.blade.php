@@ -119,8 +119,7 @@
                             Semua data diperbarui otomatis setiap kali Anda masuk.
                           </p>
                           <div class="d-flex flex-wrap gap-2">
-                            <a href="{{ url('/admin/dashboard') }}" class="btn btn-light btn-sm">Lihat Dashboard</a>
-                            <a href="{{ url('/cuti') }}" class="btn btn-outline-light btn-sm">Ajukan Cuti</a>
+                            <a href="{{ route('cuti.create') }}" class="btn btn-outline-light btn-sm">Ajukan Cuti</a>
                           </div>
                         </div>
                       </div>
@@ -195,7 +194,64 @@
                   </div>
                 </div>
               </div>
+              
+              <div class="card shadow-lg border-0 mt-4">
+            <div class="card-header">
+              <h5><i class="bx bx-list-ul"></i> Daftar User</h5>
             </div>
+
+            <div class="table-responsive">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>#ID</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Terdaftar</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @forelse ($users as $user)
+                    @if($user->role != 'admin') {{-- 🔥 ADMIN DISIMPAN --}}
+                    <tr>
+                      <td>#{{ $user->id }}</td>
+
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="avatar-circle me-3">
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                          </div>
+                          {{ $user->name }}
+                        </div>
+                      </td>
+
+                      <td>{{ $user->email }}</td>
+
+                      <td>
+                        <span class="badge bg-success">MEMBER</span>
+                      </td>
+
+                      <td>
+                        {{ $user->created_at->format('d M Y') }}<br>
+                        <small>{{ $user->created_at->format('H:i') }}</small>
+                      </td>
+                    </tr>
+                    @endif
+                  @empty
+                  <tr>
+                    <td colspan="5" class="text-center">Tidak ada data</td>
+                  </tr>
+                  @endforelse
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+            </div>
+
+            
             <!-- / Content -->
 
             <!-- Footer -->

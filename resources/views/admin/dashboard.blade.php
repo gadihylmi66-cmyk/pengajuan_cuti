@@ -93,33 +93,33 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
-        @include('layouts.partials.sidebar')
+        @include('admin.partials.sidebar')
         <!-- / Menu -->
 
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-          @include('layouts.partials.navbar')
+          @include('admin.partials.navbar')
           <!-- / Navbar -->
           <!-- Content wrapper -->
-          <div class="content-wrapper">
+          <div class="content-wrapper" style="background-color: #f5efe5; color: #4e3b23;">
             <!-- Content -->
 
-            <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="container-xxl flex-grow-1 container-p-y" style="background-color: #f7f1e8; color: #4e3b23;">
               <div class="row">
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card overflow-hidden bg-primary text-white">
+                  <div class="card overflow-hidden" style="background: linear-gradient(180deg, #f9f4ea 0%, #ddc6a7 100%); border-color: rgba(78, 59, 35, 0.18);">
                     <div class="row g-0 align-items-center">
                       <div class="col-sm-7">
                         <div class="card-body">
-                          <h5 class="card-title text-white mb-2">Selamat datang, {{ Auth::user()->name }}! 🎉</h5>
-                          <p class="card-text text-white-75 mb-4">
+                          <h5 class="card-title mb-2" style="color: #4e3b23;">Selamat datang, {{ Auth::user()->name }}! 🎉</h5>
+                          <p class="card-text mb-4" style="color: #5b4b39;">
                             Kelola pengajuan cuti, jabatan, dan hasil karyawan dengan mudah dari dashboard ini.
                             Semua data diperbarui otomatis setiap kali Anda masuk.
                           </p>
                           <div class="d-flex flex-wrap gap-2">
                             <a href="{{ url('/admin/dashboard') }}" class="btn btn-light btn-sm">Lihat Dashboard</a>
-                            <a href="{{ url('/cuti') }}" class="btn btn-outline-light btn-sm">Ajukan Cuti</a>
+                            <a href="{{ url('/cuti') }}" class="btn btn-outline-light btn-sm">Pengajuan Cuti</a>
                           </div>
                         </div>
                       </div>
@@ -138,62 +138,118 @@
                   </div>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                  <div class="card h-100">
+                  <div class="card h-100 text-dark" style="background: linear-gradient(180deg, #f8f2e7 0%, #e6cfb0 100%); border-color: rgba(78, 59, 35, 0.18);">
                     <div class="card-body">
                       <div class="d-flex align-items-start justify-content-between">
-                        <div class="avatar bg-label-primary rounded">
-                          <i class="bx bx-user fs-4 text-primary"></i>
+                        <div class="avatar rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #c19a6b;">
+                          <i class="bx bx-user fs-4" style="color: #3b200c;"></i>
                         </div>
-                        <span class="badge bg-primary">Karyawan</span>
+                        <span class="badge rounded-pill" style="background: #d2b48c; color: #4e3521; font-size: .82rem; padding: .35rem .75rem;">Karyawan</span>
                       </div>
                       <h3 class="mt-3">{{ $karyawanCount }}</h3>
-                      <p class="mb-0 text-muted">Jumlah karyawan terdaftar</p>
+                      <p class="mb-0">Jumlah karyawan terdaftar</p>
                     </div>
                   </div>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                  <div class="card h-100">
+                  <div class="card h-100 text-dark" style="background: linear-gradient(180deg, #f8f2e7 0%, #e6cfb0 100%); border-color: rgba(78, 59, 35, 0.18);">
                     <div class="card-body">
                       <div class="d-flex align-items-start justify-content-between">
-                        <div class="avatar bg-label-info rounded">
-                          <i class="bx bx-briefcase fs-4 text-info"></i>
+                        <div class="avatar rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #c19a6b;">
+                          <i class="bx bx-briefcase fs-4" style="color: #3b200c;"></i>
                         </div>
-                        <span class="badge bg-info">Jabatan</span>
+                        <span class="badge rounded-pill" style="background: #d2b48c; color: #4e3521; font-size: .82rem; padding: .35rem .75rem;">Jabatan</span>
                       </div>
                       <h3 class="mt-3">{{ $jabatanCount }}</h3>
-                      <p class="mb-0 text-muted">Total jabatan yang tersedia</p>
+                      <p class="mb-0">Total jabatan yang tersedia</p>
                     </div>
                   </div>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                  <div class="card h-100">
+                  <div class="card h-100 text-dark" style="background: linear-gradient(180deg, #f8f2e7 0%, #e6cfb0 100%); border-color: rgba(78, 59, 35, 0.18);">
                     <div class="card-body">
                       <div class="d-flex align-items-start justify-content-between">
-                        <div class="avatar bg-label-success rounded">
-                          <i class="bx bx-calendar-check fs-4 text-success"></i>
+                        <div class="avatar rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #c19a6b;">
+                          <i class="bx bx-calendar-check fs-4" style="color: #3b200c;"></i>
                         </div>
-                        <span class="badge bg-success">Cuti</span>
+                        <span class="badge rounded-pill" style="background: #d2b48c; color: #4e3521; font-size: .82rem; padding: .35rem .75rem;">Cuti</span>
                       </div>
                       <h3 class="mt-3">{{ $cutiCount }}</h3>
-                      <p class="mb-0 text-muted">Pengajuan cuti yang tercatat</p>
+                      <p class="mb-0">Pengajuan cuti yang tercatat</p>
                     </div>
                   </div>
                 </div>
                 <div class="col-xl-3 col-md-6 mb-4">
-                  <div class="card h-100">
+                  <div class="card h-100 text-dark" style="background: linear-gradient(180deg, #f8f2e7 0%, #e6cfb0 100%); border-color: rgba(78, 59, 35, 0.18);">
                     <div class="card-body">
                       <div class="d-flex align-items-start justify-content-between">
-                        <div class="avatar bg-label-warning rounded">
-                          <i class="bx bx-check-shield fs-4 text-warning"></i>
+                        <div class="avatar rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: #c19a6b;">
+                          <i class="bx bx-check-shield fs-4" style="color: #3b200c;"></i>
                         </div>
-                        <span class="badge bg-warning">Hasil</span>
+                        <span class="badge rounded-pill" style="background: #d2b48c; color: #4e3521; font-size: .82rem; padding: .35rem .75rem;">Hasil</span>
                       </div>
                       <h3 class="mt-3">{{ $hasilCount }}</h3>
-                      <p class="mb-0 text-muted">Data hasil yang tersimpan</p>
+                      <p class="mb-0">Data hasil yang tersimpan</p>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div class="card shadow-lg border-0 mt-4">
+            <div class="card-header">
+              <h5><i class="bx bx-list-ul"></i> Daftar User</h5>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>#ID</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Terdaftar</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @forelse ($users as $user)
+                  <tr class="{{ $user->role == 'admin' ? 'admin-row' : '' }}">
+                    <td>#{{ $user->id }}</td>
+
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-circle me-3">
+                          {{ strtoupper(substr($user->name, 0, 1)) }}
+                        </div>
+                        {{ $user->name }}
+                      </div>
+                    </td>
+
+                    <td>{{ $user->email }}</td>
+
+                    <td>
+                      @if($user->role == 'admin')
+                        <span class="badge bg-danger">ADMIN 👑</span>
+                      @else
+                        <span class="badge bg-success">MEMBER</span>
+                      @endif
+                    </td>
+
+                    <td>
+                      {{ $user->created_at->format('d M Y') }}<br>
+                      <small>{{ $user->created_at->format('H:i') }}</small>
+                    </td>
+                  </tr>
+                  @empty
+                  <tr>
+                    <td colspan="5" class="text-center">Tidak ada data</td>
+                  </tr>
+                  @endforelse
+                </tbody>
+              </table>
+            </div>
+
             </div>
             <!-- / Content -->
 

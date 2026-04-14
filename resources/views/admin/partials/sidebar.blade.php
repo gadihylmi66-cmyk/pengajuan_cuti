@@ -1,4 +1,10 @@
-<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" style="background: linear-gradient(180deg, #f8f0e4 0%, #ddc7a7 100%); color: #4e3b23;">
+          <style>
+            #layout-menu .menu-link { color: #4e3b23 !important; }
+            #layout-menu .menu-link:hover, #layout-menu .menu-item.active .menu-link { color: #2f1f0d !important; background: rgba(78, 59, 35, 0.08) !important; }
+            #layout-menu .app-brand-text { color: #4e3b23 !important; }
+            #layout-menu .menu-inner-shadow { background: linear-gradient(#f8f0e4 41%, rgba(248, 240, 228, 0.85) 95%, rgba(248, 240, 228, 0)) !important; }
+          </style>
           <div class="app-brand demo">
             <a href="index.html" class="app-brand-link">
               <span class="app-brand-logo demo">
@@ -69,7 +75,7 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item">
-              <a href="{{ route('home') }}" class="menu-link">
+              <a href="{{ route('admin.dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
@@ -82,9 +88,15 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ route('karyawan.index') }}" class="menu-link">
+                <a href="{{ route('admin.karyawan.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-user"></i>
                     <div data-i18n="Karyawan">Karyawan</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('admin.jabatan.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-briefcase"></i>
+                    <div data-i18n="Jabatan">Jabatan</div>
                 </a>
             </li>
           </ul>

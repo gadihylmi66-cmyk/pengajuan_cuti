@@ -27,7 +27,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $users = User::where('role', '!=', 'admin')->latest()->get();
         return view('home', [
+            'users' => $users,
             'karyawanCount' => User::count(),
             'jabatanCount' => Jabatan::count(),
             'cutiCount' => Cuti::count(),

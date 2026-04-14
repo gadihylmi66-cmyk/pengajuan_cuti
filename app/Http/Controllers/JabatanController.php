@@ -13,7 +13,7 @@ class JabatanController extends Controller
     public function index()
     {
         $jabatan = Jabatan::all();
-        return view('jabatan.index', compact('jabatan'));
+        return view('admin.jabatan.index', compact('jabatan'));
     }
 
     /**
