@@ -13,6 +13,11 @@ class JabatanController extends Controller
         return view('admin.jabatan.index', compact('jabatan'));
     }
 
+    public function create()
+    {
+        return view('admin.jabatan.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -25,8 +30,16 @@ class JabatanController extends Controller
             ->with('success', 'Jabatan berhasil ditambahkan.');
     }
 
-    public function update(Request $request, Jabatan $jabatan)
+    public function edit(string $id)
     {
+        $jabatan = Jabatan::findOrFail($id);
+        return view('admin.jabatan.edit', compact('jabatan'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $jabatan = Jabatan::findOrFail($id);
+
         $request->validate([
             'jabatan' => 'required|string|max:255|unique:jabatans,jabatan,' . $jabatan->id,
         ]);

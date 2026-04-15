@@ -40,21 +40,21 @@
   <body>
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
-        @include('layouts.partials.sidebar')
+        @include('admin.partials.sidebar')
 
         <div class="layout-page">
-          @include('layouts.partials.navbar')
+          @include('admin.partials.navbar')
 
-          <div class="content-wrapper">
-            <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="content-wrapper" style="background-color: #f5efe5; color: #4e3b23;">
+            <div class="container-xxl flex-grow-1 container-p-y" style="background-color: #f7f1e8;">
               <div class="row">
                 <div class="col-12 mb-4">
-                  <div class="card">
+                  <div class="card" style="background: linear-gradient(180deg, #f9f4ea 0%, #ddc6a7 100%); border-color: rgba(78, 59, 35, 0.18);">
                     <div class="card-body">
-                      <h4 class="card-title mb-2">Tambah Karyawan</h4>
+                      <h4 class="card-title mb-2" style="color: #4e3b23;">Tambah Karyawan</h4>
                       <p class="text-muted mb-4">Isi data karyawan baru dengan lengkap.</p>
 
-                      @if ($errors->any())
+                      {{-- @if ($errors->any())
                         <div class="alert alert-danger">
                           <ul class="mb-0">
                             @foreach ($errors->all() as $error)
@@ -62,7 +62,7 @@
                             @endforeach
                           </ul>
                         </div>
-                      @endif
+                      @endif --}}
 
                       <form action="{{ route('admin.karyawan.store') }}" method="POST">
                         @csrf
@@ -113,7 +113,15 @@
                           </div>
                           <div class="col-md-6">
                             <label for="agama" class="form-label">Agama</label>
-                            <input type="text" id="agama" name="agama" class="form-control" value="{{ old('agama') }}" placeholder="Contoh: Islam" required />
+                            <select name="agama" id="agama" class="form-select" required>
+                              <option value="" disabled {{ old('agama') ? '' : 'selected' }}>Pilih Agama</option>
+                              <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                              <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                              <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                              <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                              <option value="Budha" {{ old('agama') == 'Budha' ? 'selected' : '' }}>Budha</option>
+                              <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                            </select>
                           </div>
                         </div>
 
@@ -134,10 +142,9 @@
                   </div>
                 </div>
               </div>
-            </div>
 
-            @include('layouts.partials.footer')
-            <div class="content-backdrop fade"></div>
+              @include('admin.partials.footer')
+              <div class="content-backdrop fade"></div>
           </div>
         </div>
       </div>

@@ -74,14 +74,6 @@
                         <p class="text-white mb-4" style="opacity:.75; font-size:.875rem;">
                           Pantau dan kelola pengajuan cuti Anda dari sini.
                         </p>
-                        @if($karyawan)
-                          <a href="{{ route('cuti.create') }}" class="btn btn-white btn-sm me-2">
-                            <i class="bx bx-plus me-1"></i> Ajukan Cuti
-                          </a>
-                          <a href="{{ route('cuti.index') }}" class="btn btn-outline-white btn-sm">
-                            Lihat Riwayat
-                          </a>
-                        @endif
                       </div>
                     </div>
                     <div class="col-sm-5 text-center d-none d-sm-block">

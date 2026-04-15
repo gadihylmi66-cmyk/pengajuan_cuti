@@ -46,12 +46,6 @@
                         <p class="text-white mb-4" style="opacity:.85;">
                           Kelola pengajuan cuti karyawan, data jabatan, dan karyawan dari sini.
                         </p>
-                        <a href="{{ route('admin.cuti.index') }}" class="btn btn-white btn-sm me-2">
-                          <i class="bx bx-calendar-check me-1"></i> Kelola Cuti
-                        </a>
-                        <a href="{{ route('admin.karyawan.index') }}" class="btn btn-outline-white btn-sm">
-                          Data Karyawan
-                        </a>
                       </div>
                     </div>
                     <div class="col-sm-5 text-center d-none d-sm-block">

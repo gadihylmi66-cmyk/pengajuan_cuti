@@ -44,16 +44,17 @@
         <div class="layout-page">
           @include('admin.partials.navbar')
 
-          <div class="content-wrapper">
-            <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="content-wrapper" style="background-color: #f5efe5; color: #4e3b23;">
+            <div class="container-xxl flex-grow-1 container-p-y" style="background-color: #f7f1e8; color: #4e3b23;">
               <div class="row mb-4">
                 <div class="col-12">
-                  <div class="card bg-primary text-white">
+                  <div class="card" style="background: linear-gradient(180deg, #f9f4ea 0%, #ddc6a7 100%); border-color: rgba(78, 59, 35, 0.18);">
                     <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
                       <div>
-                        <h4 class="card-title text-white mb-1">Daftar Karyawan</h4>
-                        <p class="card-text text-white-75 mb-0">Lihat semua data karyawan yang terdaftar.</p>
+                        <h4 class="card-title mb-1" style="color: #4e3b23;">Daftar Karyawan</h4>
+                        <p class="card-text text-muted mb-0">Lihat semua data karyawan yang terdaftar.</p>
                       </div>
+                      <a href="{{ route('admin.karyawan.create') }}" class="btn btn-light btn-sm" style="color: #4e3b23; border-color: rgba(78, 59, 35, 0.15);">Tambah Karyawan</a>
                     </div>
                   </div>
                 </div>
@@ -61,13 +62,12 @@
 
               <div class="row g-4">
                 <div class="col-xl-8 col-lg-12">
-                  <div class="card">
+                  <div class="card" style="border-color: rgba(78, 59, 35, 0.18);">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <div>
                         <h5 class="mb-0">Data Karyawan</h5>
                         <small class="text-muted">Semua karyawan yang sudah tersimpan di sistem.</small>
                       </div>
-                      <a href="{{ route('admin.karyawan.create') }}" class="btn btn-primary btn-sm">Tambah Karyawan</a>
                     </div>
                     <div class="card-body">
                       @if(session('success'))
@@ -87,18 +87,33 @@
                               <th>Tempat Lahir</th>
                               <th>Tanggal Lahir</th>
                               <th>No. Telp</th>
+                              <th>Aksi</th>
                             </tr>
                           </thead>
                           <tbody>
                             @forelse($karyawans as $karyawan)
                               <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ optional($karyawan->user)->name ?? 'User #' . $karyawan->id_user }}</td>
+                                <td>{{ $karyawan->user->name}}</td>
                                 <td>{{ optional($karyawan->jabatan)->jabatan ?? 'Jabatan #' . $karyawan->id_jabatan }}</td>
                                 <td>{{ $karyawan->jenis_kelamin }}</td>
                                 <td>{{ $karyawan->tempat_lahir }}</td>
                                 <td>{{ date('d M Y', strtotime($karyawan->tanggal_lahir)) }}</td>
                                 <td>{{ $karyawan->no_telp }}</td>
+                                <td>
+                                  <div class="d-flex gap-2">
+                                    <a href="{{ route('admin.karyawan.edit', $karyawan->id) }}" class="btn btn-warning btn-sm">
+                                      <i class="bx bx-edit"></i>
+                                    </a>
+                                    <form action="{{ route('admin.karyawan.destroy', $karyawan->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus karyawan ini?');">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bx bx-trash"></i>
+                                      </button>
+                                    </form>
+                                  </div>
+                                </td>
                               </tr>
                             @empty
                               <tr>
@@ -117,7 +132,7 @@
                 <div class="col-xl-4 col-lg-12">
                   <div class="row g-4">
                     <div class="col-12">
-                      <div class="card">
+                      <div class="card" style="border-color: rgba(78, 59, 35, 0.18);">
                         <div class="card-body">
                           <div class="d-flex align-items-start justify-content-between">
                             <div>
@@ -136,7 +151,7 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <div class="card bg-light">
+                      <div class="card" style="border-color: rgba(78, 59, 35, 0.18);">
                         <div class="card-body">
                           <h6 class="mb-3">Catatan</h6>
                           <ul class="ps-3 mb-0">

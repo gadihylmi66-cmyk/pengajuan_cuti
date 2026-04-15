@@ -55,11 +55,5 @@
         <div>Pengajuan Cuti</div>
       </a>
     </li>
-    <li class="menu-item {{ request()->routeIs('karyawan.*') ? 'active' : '' }}">
-      <a href="{{ route('karyawan.index') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-group"></i>
-        <div>Data Karyawan</div>
-      </a>
-    </li>
   </ul>
 </aside>

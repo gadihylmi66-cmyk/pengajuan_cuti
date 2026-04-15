@@ -22,8 +22,8 @@
       @include('admin.partials.sidebar')
       <div class="layout-page">
         @include('admin.partials.navbar')
-        <div class="content-wrapper">
-          <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="content-wrapper" style="background-color: #f5efe5; color: #4e3b23;">
+          <div class="container-xxl flex-grow-1 container-p-y" style="background-color: #f7f1e8; color: #4e3b23;">
 
             @if(session('success'))
               <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -34,13 +34,13 @@
 
             <div class="row mb-4">
               <div class="col-12">
-                <div class="card bg-primary text-white">
+                <div class="card" style="background: linear-gradient(180deg, #f9f4ea 0%, #ddc6a7 100%); border-color: rgba(78, 59, 35, 0.18);">
                   <div class="card-body d-flex align-items-center justify-content-between gap-3">
                     <div>
-                      <h4 class="card-title text-white mb-1">Kelola Pengajuan Cuti</h4>
-                      <p class="card-text text-white-75 mb-0">Setujui atau tolak pengajuan cuti karyawan.</p>
+                      <h4 class="card-title mb-1" style="color: #4e3b23;">Kelola Pengajuan Cuti</h4>
+                      <p class="card-text text-muted mb-0">Setujui atau tolak pengajuan cuti karyawan.</p>
                     </div>
-                    <i class="bx bx-calendar-check fs-1 text-white-50"></i>
+                    <i class="bx bx-calendar-check fs-1" style="color: rgba(78, 59, 35, 0.45);"></i>
                   </div>
                 </div>
               </div>
@@ -77,7 +77,7 @@
               </div>
             </div>
 
-            <div class="card">
+            <div class="card" style="border-color: rgba(78, 59, 35, 0.18);">
               <div class="card-header">
                 <h5 class="mb-0">Daftar Pengajuan Cuti</h5>
               </div>
@@ -140,7 +140,7 @@
             </div>
 
           </div>
-          @include('layouts.partials.footer')
+          @include('admin.partials.footer')
           <div class="content-backdrop fade"></div>
         </div>
       </div>

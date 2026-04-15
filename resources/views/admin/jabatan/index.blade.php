@@ -55,7 +55,7 @@
                         <h4 class="card-title mb-1" style="color: #4e3b23;">Daftar Jabatan</h4>
                         <p class="card-text text-muted mb-0">Lihat semua jabatan yang tersedia dan terdaftar.</p>
                       </div>
-                      {{-- <a href="{{ route('jabatan.create') }}" class="btn btn-light btn-sm" style="color: #4e3b23; border-color: rgba(78, 59, 35, 0.15);">Tambah Jabatan</a> --}}
+                      <a href="{{ route('admin.jabatan.create') }}" class="btn btn-light btn-sm" style="color: #4e3b23; border-color: rgba(78, 59, 35, 0.15);">Tambah Jabatan</a>
                     </div>
                   </div>
                 </div>
@@ -84,6 +84,7 @@
                               <th>No</th>
                               <th>Nama Jabatan</th>
                               <th>Dibuat Pada</th>
+                              <th>Aksi</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -92,10 +93,24 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->jabatan }}</td>
                                 <td>{{ $item->created_at ? $item->created_at->format('d M Y') : '-' }}</td>
+                                <td>
+                                  <div class="d-flex gap-2">
+                                    <a href="{{ route('admin.jabatan.edit', $item->id) }}" class="btn btn-warning btn-sm">
+                                      <i class="bx bx-edit"></i>
+                                    </a>
+                                    <form action="{{ route('admin.jabatan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jabatan ini?');">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bx bx-trash"></i>
+                                      </button>
+                                    </form>
+                                  </div>
+                                </td>
                               </tr>
                             @empty
                               <tr>
-                                <td colspan="3" class="text-center text-muted py-4">
+                                <td colspan="4" class="text-center text-muted py-4">
                                   Belum ada data jabatan.
                                 </td>
                               </tr>
