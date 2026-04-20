@@ -19,7 +19,6 @@
   <div class="menu-inner-shadow"></div>
 
   <ul class="menu-inner py-1">
-
     <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
       <a href="{{ route('admin.dashboard') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
@@ -60,5 +59,11 @@
       </a>
     </li>
 
+    <li class="menu-item {{ request()->routeIs('admin.jenis-cuti.*') ? 'active' : '' }}">
+      <a href="{{ route('admin.jenis-cuti.index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-category-alt"></i>
+        <div>Jenis Cuti</div>
+      </a>
+    </li>
   </ul>
 </aside>

@@ -3,263 +3,408 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Welcome</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+    <title>Pengajuan Cuti Karyawan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-light: #8b5cf6;
-            --gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
-
-            --bg-main: #f4f6fb;
-            --bg-card: #ffffff;
-
-            --text-main: #1f2937;
-            --text-secondary: #6b7280;
+            --bg: #f6f1e8;
+            --panel: rgba(255, 255, 255, 0.88);
+            --ink: #2d2218;
+            --muted: #6a5a4a;
+            --line: rgba(76, 57, 34, 0.12);
+            --primary: #9f6c3d;
+            --primary-dark: #72431f;
+            --accent: #d8b48d;
+            --success: #1f7a5a;
+            --shadow: 0 24px 70px rgba(71, 46, 20, 0.14);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         body {
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            background: var(--bg-main);
-            color: var(--text-main);
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(216, 180, 141, 0.6), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(159, 108, 61, 0.18), transparent 28%),
+                var(--bg);
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .shell {
+            width: min(1180px, calc(100% - 32px));
+            margin: 24px auto 48px;
+        }
+
+        .nav {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+        }
+
+        .brand {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-mark {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            box-shadow: var(--shadow);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
+            padding: 13px 20px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-weight: 700;
+            transition: transform .25s ease, background .25s ease, color .25s ease;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1100px;
+        .btn:hover { transform: translateY(-1px); }
+        .btn-outline { border-color: var(--line); background: rgba(255,255,255,.7); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 28px;
+            align-items: stretch;
+            margin-top: 24px;
         }
 
-        /* Navbar */
-        .navbar {
+        .hero-main,
+        .hero-side,
+        .feature,
+        .metric {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            backdrop-filter: blur(12px);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-main {
+            padding: 42px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-main::after {
+            content: "";
+            position: absolute;
+            inset: auto -120px -140px auto;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(216,180,141,.7), rgba(216,180,141,0));
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(159,108,61,.12);
+            color: var(--primary-dark);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 20px 0 14px;
+            font-size: clamp(38px, 5vw, 66px);
+            line-height: 1.02;
+            max-width: 720px;
+        }
+
+        .lead {
+            max-width: 620px;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 26px;
+        }
+
+        .metric {
+            padding: 18px;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .metric span {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .hero-side {
+            padding: 24px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .calendar-card {
+            padding: 24px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, #fff, #f2e5d7);
+            border: 1px solid var(--line);
+        }
+
+        .calendar-head,
+        .mini-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 50px;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .nav-btn a {
-            text-decoration: none;
-            color: var(--text-main);
-            padding: 10px 18px;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .nav-btn a:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white !important;
-            font-weight: 600;
-        }
-
-        /* Hero */
-        .hero {
+        .calendar-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 18px;
         }
 
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-
-        .hero span {
-            color: var(--primary);
-        }
-
-        .hero p {
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-        }
-
-        .buttons a {
-            display: inline-block;
-            margin-right: 10px;
-            padding: 12px 22px;
-            border-radius: 10px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .btn-start {
-            background: var(--gradient);
-            color: white;
-        }
-
-        .btn-start:hover {
-            opacity: 0.9;
-        }
-
-        .btn-outline {
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Card */
-        .cards {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .card {
-            padding: 20px;
-            border-radius: 16px;
-            background: var(--bg-card);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h3 {
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .card p {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        .footer {
+        .calendar-grid span {
             text-align: center;
-            margin-top: 60px;
+            padding: 10px 0;
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--muted);
+            background: rgba(255,255,255,.8);
+        }
+
+        .calendar-grid .active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .mini-card {
+            padding: 18px;
+            border-radius: 20px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,.78);
+        }
+
+        .section {
+            margin-top: 28px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .feature {
+            padding: 26px;
+        }
+
+        .feature h3 {
+            margin: 16px 0 10px;
+            font-size: 20px;
+        }
+
+        .feature p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .footer {
+            margin-top: 28px;
+            color: var(--muted);
             font-size: 14px;
-            color: var(--text-secondary);
+            text-align: center;
         }
 
-        /* Animation */
-        .fade {
-            animation: fadeUp 1s ease;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media(max-width: 768px) {
-            .hero {
+        @media (max-width: 980px) {
+            .hero,
+            .section {
                 grid-template-columns: 1fr;
-                text-align: center;
             }
 
-            .buttons a {
-                display: block;
-                margin: 10px auto;
+            .hero-grid {
+                grid-template-columns: 1fr;
             }
+        }
 
-            .navbar {
+        @media (max-width: 640px) {
+            .nav {
                 flex-direction: column;
-                gap: 15px;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .nav-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .hero-main,
+            .hero-side,
+            .feature {
+                padding: 22px;
             }
         }
     </style>
 </head>
-
 <body>
+    <div class="shell">
+        <div class="nav">
+            <div class="brand">
+                <div class="brand-mark">C</div>
+                <div>
+                    <div>Pengajuan Cuti</div>
+                    <small style="color: var(--muted); font-weight: 600;">Sistem cuti karyawan yang lebih rapi dan cepat</small>
+                </div>
+            </div>
 
-<div class="container fade">
-
-    <div class="navbar">
-        <div class="logo">MyApp</div>
-
-        <div class="nav-btn">
-            @auth
-                <a href="{{ url('/dashboard') }}" class="btn-primary">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}">Login</a>
-
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn-primary">Register</a>
-                @endif
-            @endauth
-        </div>
-    </div>
-
-    <div class="hero">
-
-        <div>
-            <h1>
-                Welcome to <br>
-                <span>Modern App</span>
-            </h1>
-
-            <p>
-                Aplikasi Laravel modern, ringan, dan siap digunakan untuk kebutuhan bisnis kamu.
-            </p>
-
-            <div class="buttons">
-                <a href="{{ route('login') }}" class="btn-start">Get Started</a>
-                <a href="#" class="btn-outline">Learn More</a>
+            <div class="nav-actions">
+                @auth
+                    <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('cuti.index') }}" class="btn btn-primary">Masuk ke Aplikasi</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-outline">Login</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="btn btn-primary">Daftar Akun</a>
+                    @endif
+                @endauth
             </div>
         </div>
 
-        <div class="cards">
-            <div class="card">
-                <h3>⚡ Fast</h3>
-                <p>Performa cepat dan optimal.</p>
+        <section class="hero">
+            <div class="hero-main">
+                <div class="eyebrow">Workflow cuti lebih jelas dan terdokumentasi</div>
+                <h1>Ajukan cuti, lampirkan dokumen, dan pantau persetujuan tanpa proses manual.</h1>
+                <p class="lead">
+                    Aplikasi ini membantu karyawan dan admin mengelola pengajuan cuti dalam satu alur yang tertib:
+                    jenis cuti terstruktur, kuota tahunan terkontrol, serta riwayat persetujuan mudah ditelusuri.
+                </p>
+
+                <div class="nav-actions">
+                    <a href="{{ route('login') }}" class="btn btn-primary">Mulai Sekarang</a>
+                    <a href="#fitur" class="btn btn-outline">Lihat Fitur</a>
+                </div>
+
+                <div class="hero-grid">
+                    <div class="metric">
+                        <strong>1 halaman</strong>
+                        <span>User bisa ajukan cuti dan lihat riwayat tanpa menu samping yang berlebihan.</span>
+                    </div>
+                    <div class="metric">
+                        <strong>Lampiran</strong>
+                        <span>Dukung file PDF atau gambar sebagai bukti kebutuhan cuti.</span>
+                    </div>
+                    <div class="metric">
+                        <strong>Kuota tahunan</strong>
+                        <span>Batas maksimal cuti dikendalikan dari master jenis cuti.</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>🎨 Modern</h3>
-                <p>Desain elegan dan kekinian.</p>
-            </div>
+            <div class="hero-side">
+                <div class="calendar-card">
+                    <div class="calendar-head">
+                        <div>
+                            <strong style="display:block; font-size: 20px;">Agenda Cuti</strong>
+                            <small style="color: var(--muted);">Pantau tanggal penting dengan cepat</small>
+                        </div>
+                        <span style="padding: 8px 12px; border-radius: 999px; background: rgba(31,122,90,.12); color: var(--success); font-weight: 700;">Aktif</span>
+                    </div>
+                    <div class="calendar-grid">
+                        <span>Sn</span><span>Sl</span><span>Rb</span><span>Km</span><span>Jm</span><span>Sb</span><span>Mg</span>
+                        <span>10</span><span>11</span><span>12</span><span class="active">13</span><span class="active">14</span><span>15</span><span>16</span>
+                    </div>
+                </div>
 
-            <div class="card">
-                <h3>🔒 Secure</h3>
-                <p>Keamanan terjamin untuk aplikasi.</p>
+                <div class="mini-card">
+                    <div class="mini-row">
+                        <strong>Alur Persetujuan</strong>
+                        <span style="color: var(--primary-dark); font-weight: 700;">Realtime</span>
+                    </div>
+                    <p style="color: var(--muted); line-height: 1.7; margin: 12px 0 0;">
+                        Admin dapat melihat permohonan, membaca lampiran, dan memberi keputusan langsung dari dashboard.
+                    </p>
+                </div>
+
+                <div class="mini-card">
+                    <div class="mini-row">
+                        <strong>Data Karyawan</strong>
+                        <span style="color: var(--primary-dark); font-weight: 700;">Terlengkapi</span>
+                    </div>
+                    <p style="color: var(--muted); line-height: 1.7; margin: 12px 0 0;">
+                        Foto profil, jabatan, dan identitas dasar karyawan tersimpan rapi untuk mendukung proses administrasi.
+                    </p>
+                </div>
             </div>
+        </section>
+
+        <section class="section" id="fitur">
+            <article class="feature">
+                <div class="icon">01</div>
+                <h3>Pengajuan lebih tertata</h3>
+                <p>Karyawan cukup membuka satu halaman untuk mengajukan cuti baru, memeriksa sisa kuota per jenis cuti, dan meninjau riwayat pengajuan.</p>
+            </article>
+            <article class="feature">
+                <div class="icon">02</div>
+                <h3>Kontrol admin lebih praktis</h3>
+                <p>Master jabatan, karyawan, dan jenis cuti dapat dikelola dari tabel yang sama dengan form modal tanpa berpindah halaman.</p>
+            </article>
+            <article class="feature">
+                <div class="icon">03</div>
+                <h3>Riwayat dan paging</h3>
+                <p>Setiap tabel utama dilengkapi paging agar data tetap nyaman dibaca saat jumlah karyawan dan pengajuan terus bertambah.</p>
+            </article>
+        </section>
+
+        <div class="footer">
+            {{ date('Y') }} Pengajuan Cuti Karyawan. Dirancang untuk alur administrasi yang lebih rapi.
         </div>
-
     </div>
-
-    <div class="footer">
-        © {{ date('Y') }} MyApp. All rights reserved.
-    </div>
-
-</div>
-
 </body>
 </html>

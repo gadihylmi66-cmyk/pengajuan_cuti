@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,    // 1. Admin user
             JabatanSeeder::class, // 2. 5 jabatan
+            JenisCutiSeeder::class,
             KaryawanSeeder::class,// 3. 5 user + 5 karyawan
             CutiSeeder::class,    // 4. 5 pengajuan cuti
             HasilSeeder::class,   // 5. 5 hasil

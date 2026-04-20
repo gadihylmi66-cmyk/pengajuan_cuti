@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cuti;
+use App\Models\JenisCuti;
 use App\Models\Karyawan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CutiController extends Controller
@@ -15,39 +17,44 @@ class CutiController extends Controller
 
     public function index()
     {
-        $karyawan = Karyawan::where('id_user', auth()->id())->first();
+        $karyawan = Karyawan::with(['user', 'jabatan'])->where('id_user', auth()->id())->first();
+        $jenisCutis = JenisCuti::where('is_active', true)->orderBy('nama')->get();
 
         if (!$karyawan) {
             return view('cuti.index', [
-                'cutis'         => collect(),
-                'pendingCount'  => 0,
+                'cutis' => collect(),
+                'jenisCutis' => $jenisCutis,
+                'karyawan' => null,
+                'usedQuota' => collect(),
+                'pendingCount' => 0,
                 'approvedCount' => 0,
                 'rejectedCount' => 0,
             ])->with('warning', 'Data karyawan Anda belum terdaftar. Hubungi admin.');
         }
 
-        $cutis = Cuti::where('id_karyawans', $karyawan->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $cutiBaseQuery = Cuti::with('jenisCuti')->where('id_karyawans', $karyawan->id);
+        $cutis = (clone $cutiBaseQuery)->latest()->paginate(10)->withQueryString();
+        $allCutis = (clone $cutiBaseQuery)->get();
+        $year = now()->year;
+        $usedQuota = $jenisCutis->mapWithKeys(function ($jenisCuti) use ($karyawan, $year) {
+            $days = Cuti::where('id_karyawans', $karyawan->id)
+                ->where('jenis_cuti_id', $jenisCuti->id)
+                ->whereYear('tanggal_masuk', $year)
+                ->whereIn('status', ['menunggu', 'disetujui'])
+                ->sum('jumlah_hari');
+
+            return [$jenisCuti->id => $days];
+        });
 
         return view('cuti.index', [
-            'cutis'         => $cutis,
-            'pendingCount'  => $cutis->where('status', 'menunggu')->count(),
-            'approvedCount' => $cutis->where('status', 'disetujui')->count(),
-            'rejectedCount' => $cutis->where('status', 'ditolak')->count(),
+            'cutis' => $cutis,
+            'jenisCutis' => $jenisCutis,
+            'karyawan' => $karyawan,
+            'usedQuota' => $usedQuota,
+            'pendingCount' => $allCutis->where('status', 'menunggu')->count(),
+            'approvedCount' => $allCutis->where('status', 'disetujui')->count(),
+            'rejectedCount' => $allCutis->where('status', 'ditolak')->count(),
         ]);
-    }
-
-    public function create()
-    {
-        $karyawan = Karyawan::where('id_user', auth()->id())->first();
-
-        if (!$karyawan) {
-            return redirect()->route('cuti.index')
-                ->with('error', 'Data karyawan Anda belum terdaftar. Hubungi admin.');
-        }
-
-        return view('cuti.create', compact('karyawan'));
     }
 
     public function store(Request $request)
@@ -55,36 +62,40 @@ class CutiController extends Controller
         $karyawan = Karyawan::where('id_user', auth()->id())->firstOrFail();
 
         $data = $request->validate([
-            'alasan_cuti'    => 'required|string|max:500',
-            'tanggal_masuk'  => 'required|date|after_or_equal:today',
+            'jenis_cuti_id' => 'required|exists:jenis_cutis,id',
+            'alasan_cuti' => 'required|string|max:500',
+            'tanggal_masuk' => 'required|date|after_or_equal:today',
             'tanggal_keluar' => 'required|date|after_or_equal:tanggal_masuk',
+            'lampiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
+        $tanggalMasuk = Carbon::parse($data['tanggal_masuk']);
+        $tanggalKeluar = Carbon::parse($data['tanggal_keluar']);
+        $jumlahHari = $tanggalMasuk->diffInDays($tanggalKeluar) + 1;
+        $jenisCuti = JenisCuti::where('is_active', true)->findOrFail($data['jenis_cuti_id']);
+        $usedThisYear = Cuti::where('id_karyawans', $karyawan->id)
+            ->where('jenis_cuti_id', $jenisCuti->id)
+            ->whereYear('tanggal_masuk', $tanggalMasuk->year)
+            ->whereIn('status', ['menunggu', 'disetujui'])
+            ->sum('jumlah_hari');
+
+        if (($usedThisYear + $jumlahHari) > $jenisCuti->maksimal_hari_per_tahun) {
+            return redirect()->route('cuti.index')
+                ->withInput()
+                ->with('error', "Pengajuan melebihi batas {$jenisCuti->maksimal_hari_per_tahun} hari per tahun untuk {$jenisCuti->nama}.");
+        }
+
         $data['id_karyawans'] = $karyawan->id;
-        $data['status']       = 'menunggu';
+        $data['jumlah_hari'] = $jumlahHari;
+        $data['status'] = 'menunggu';
+
+        if ($request->hasFile('lampiran')) {
+            $data['lampiran'] = $request->file('lampiran')->store('lampiran-cuti', 'public');
+        }
 
         Cuti::create($data);
 
         return redirect()->route('cuti.index')
             ->with('success', 'Pengajuan cuti berhasil dikirim. Menunggu persetujuan admin.');
-    }
-
-    public function show(Cuti $cuti)
-    {
-        $this->authorizeOwner($cuti);
-        $cuti->load('karyawan.user');
-        return view('cuti.show', compact('cuti'));
-    }
-
-    // edit, update, destroy — tidak tersedia untuk user
-    // semua perubahan status hanya bisa dilakukan oleh admin
-
-    private function authorizeOwner(Cuti $cuti): void
-    {
-        $karyawan = Karyawan::where('id_user', auth()->id())->first();
-
-        if (!$karyawan || $cuti->id_karyawans !== $karyawan->id) {
-            abort(403, 'Anda tidak memiliki akses ke data ini.');
-        }
     }
 }

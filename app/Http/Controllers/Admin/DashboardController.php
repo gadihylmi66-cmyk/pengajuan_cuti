@@ -17,11 +17,10 @@ class DashboardController extends Controller
 
     public function dashboard()
     {
-        $recentCutis = Cuti::with('karyawan.user')
+        $recentCutis = Cuti::with(['karyawan.user', 'jenisCuti'])
             ->where('status', 'menunggu')
             ->latest()
-            ->take(5)
-            ->get();
+            ->paginate(5);
 
         return view('admin.dashboard', [
             'karyawanCount' => \App\Models\Karyawan::count(),

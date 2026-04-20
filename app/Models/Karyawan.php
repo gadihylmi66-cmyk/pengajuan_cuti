@@ -14,6 +14,7 @@ class Karyawan extends Model
     protected $fillable = [
         'id_user',
         'id_jabatan',
+        'foto_profil',
         'jenis_kelamin',
         'tempat_lahir',
         'tanggal_lahir',
@@ -30,5 +31,10 @@ class Karyawan extends Model
     public function jabatan()
     {
         return $this->belongsTo(Jabatan::class, 'id_jabatan');
+    }
+
+    public function cutis()
+    {
+        return $this->hasMany(Cuti::class, 'id_karyawans');
     }
 }
